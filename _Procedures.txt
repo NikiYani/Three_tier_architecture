@@ -1,0 +1,18 @@
+
+CREATE PROCEDURE insert_data(id integer, 
+			     surname text, 
+			     name text, 
+			     patronymic text,
+			     year_of_birth date,
+			     sex text,
+			     other text)
+LANGUAGE SQL
+AS $$
+INSERT INTO "Список студентов" VALUES (id, 
+				       surname, 
+				       name, 
+				       patronymic,
+				       year_of_birth, 
+				       sex,
+				       other);
+$$;

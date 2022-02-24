@@ -1,0 +1,6 @@
+CREATE OR REPLACE FUNCTION return_count_elem() RETURNS int AS
+$$
+BEGIN
+  RETURN COUNT(*) FROM "Список студентов";
+END
+$$ LANGUAGE plpgsql;

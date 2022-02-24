@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>config_for_creating_connection_with_db.txt</file>
+    </qresource>
+</RCC>
