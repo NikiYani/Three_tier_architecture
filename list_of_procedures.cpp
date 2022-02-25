@@ -14,7 +14,6 @@ void list_of_procedures::set_style_sheet()
 
     ui->pushButton->setStyleSheet(style_sheet->buttom_gray_blue());
     ui->pushButton_2->setStyleSheet(style_sheet->buttom_gray_blue());
-    ui->pushButton_3->setStyleSheet(style_sheet->buttom_gray_blue());
 }
 
 void list_of_procedures::trans(list_of_group_students &trans_ref)
@@ -22,11 +21,15 @@ void list_of_procedures::trans(list_of_group_students &trans_ref)
     this->trans_ref = &trans_ref;
 }
 
-list_of_procedures::list_of_procedures(QWidget *parent) :
+list_of_procedures::list_of_procedures(const QString& strHost, int nPort, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::list_of_procedures)
 {
     ui->setupUi(this);
+
+    m_pTcpSocket = new QTcpSocket(this);
+
+    m_pTcpSocket->connectToHost(strHost, nPort);
 }
 
 list_of_procedures::~list_of_procedures()
@@ -42,18 +45,10 @@ Ui::list_of_procedures &list_of_procedures::getUI()
 
 void list_of_procedures::on_pushButton_clicked()
 {
-    sql->Add_some_card();
-    trans_ref->Gen_table();
-    this->close();
-
-}
-
-
-void list_of_procedures::on_pushButton_3_clicked()
-{
-    sql->Count_of_elem();
-
-
+    slotSendToServer();
+//    QThread::sleep(2);
+//    trans_ref->Gen_table();
+//    this->close();
 }
 
 void list_of_procedures::on_pushButton_2_clicked()
@@ -65,5 +60,19 @@ void list_of_procedures::on_pushButton_2_clicked()
 void list_of_procedures::on_list_of_procedures_finished(int result)
 {
     delete this;
+}
+
+void list_of_procedures::slotSendToServer()
+{
+    QString str = "Start 1";
+    QByteArray  arrBlock;
+    QDataStream out(&arrBlock, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_2);
+    out << quint16(0) << QTime::currentTime() << str;
+
+    out.device()->seek(0);
+    out << quint16(arrBlock.size() - sizeof(quint16));
+
+    m_pTcpSocket->write(arrBlock);
 }
 

@@ -181,7 +181,7 @@ void list_of_group_students::on_pushButton_7_clicked()
 
 void list_of_group_students::on_pushButton_6_clicked()
 {
-    list_of_procedures *LOP = new list_of_procedures();
+    list_of_procedures *LOP = new list_of_procedures("localhost", 2323);
     LOP->setWindowTitle("Сервер");
     LOP->set_style_sheet();
     LOP->trans(*this);
